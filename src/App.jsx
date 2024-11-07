@@ -1,216 +1,181 @@
-"use strict";
-
-// Import only what you need, to help your bundler optimize final code size using tree shaking
-// see https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking)
-
+import React, { useState, useEffect, useMemo } from "react";
 import {
-  AmbientLight,
-  BoxGeometry,
-  Clock,
-  Color,
-  CylinderGeometry,
-  HemisphereLight,
-  Mesh,
-  MeshNormalMaterial,
-  MeshPhongMaterial,
+  ContactShadows,
+  Environment,
+  OrbitControls,
   PerspectiveCamera,
-  Scene,
-  WebGLRenderer
-} from 'three';
+} from "@react-three/drei";
+import { Canvas, useThree } from "@react-three/fiber";
+import { Leva, useControls } from "leva";
+import { Body } from "./components/Models/Body";
+import { XR, ARButton, VRButton } from '@react-three/xr';
+import * as THREE from "three";
+import { useRef } from 'react';
+import './App.css';
 
-// XR Emulator
-import { DevUI } from '@iwer/devui';
-import { XRDevice, metaQuest3 } from 'iwer';
+const capitalize = (str) => str.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 
-// XR
-import { XRButton } from 'three/addons/webxr/XRButton.js';
-
-// If you prefer to import the whole library, with the THREE prefix, use the following line instead:
-// import * as THREE from 'three'
-
-// NOTE: three/addons alias is supported by Rollup: you can use it interchangeably with three/examples/jsm/  
-
-// Importing Ammo can be tricky.
-// Vite supports webassembly: https://vitejs.dev/guide/features.html#webassembly
-// so in theory this should work:
-//
-// import ammoinit from 'three/addons/libs/ammo.wasm.js?init';
-// ammoinit().then((AmmoLib) => {
-//  Ammo = AmmoLib.exports.Ammo()
-// })
-//
-// But the Ammo lib bundled with the THREE js examples does not seem to export modules properly.
-// A solution is to treat this library as a standalone file and copy it using 'vite-plugin-static-copy'.
-// See vite.config.js
-// 
-// Consider using alternatives like Oimo or cannon-es
-import {
-  OrbitControls
-} from 'three/addons/controls/OrbitControls.js';
-
-import {
-  GLTFLoader
-} from 'three/addons/loaders/GLTFLoader.js';
-
-// Example of hard link to official repo for data, if needed
-// const MODEL_PATH = 'https://raw.githubusercontent.com/mrdoob/js/r148/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb';
-
-async function setupXR(xrMode) {
-
-  if (xrMode !== 'immersive-vr') return;
-
-  // iwer setup: emulate vr session
-  let nativeWebXRSupport = false;
-  if (navigator.xr) {
-    nativeWebXRSupport = await navigator.xr.isSessionSupported(xrMode);
+const bodyParts = {
+  Skin: {
+    Surface: ["skin"]
+  },
+  "Nervous System": {
+    "Central Nervous System": ["brain", "spinal_cord"],
+    "Sensory Organs": ["eyes"]
+  },
+  Skeleton: {
+    "Upper Body": ["spine", "pelvis"],
+    "Lower Body": ["legs", "rectus_femoris"]
+  },
+  Torso: {
+    "Respiratory System": ["lung", "bronchus"],
+    "Digestive System": ["liver", "pancreas"],
+    "Urinary System": ["kidney"]
+  },
+  Abdomen: {
+    "Digestive System": ["sm_intestine", "lg_intestine", "cystic_duct", "gallbladder", "spleen"],
+    "Urinary System": ["urinary_bladder", "ureter", "urethra"],
+    "Immune System": ["lymph_node", "thymus"]
+  },
+  Neck: {
+    "Respiratory System": ["larynx", "trachea"],
+    "Immune System": ["palatine_tonsil"],
+    "Other": ["hyoid", "cricoarytenoid"]
+  },
+  "Reproductive System": {
+    "Male": ["prostate"],
+  },
+  "Vascular System": {
+    "Heart and Blood Vessels": ["heart", "blood_vasculature"]
   }
-
-  if (!nativeWebXRSupport) {
-    const xrDevice = new XRDevice(metaQuest3);
-    xrDevice.installRuntime();
-    xrDevice.fovy = (75 / 180) * Math.PI;
-    xrDevice.ipd = 0;
-    window.xrdevice = xrDevice;
-    xrDevice.controllers.right.position.set(0.15649, 1.43474, -0.38368);
-    xrDevice.controllers.right.quaternion.set(
-      0.14766305685043335,
-      0.02471366710960865,
-      -0.0037767395842820406,
-      0.9887216687202454,
-    );
-    xrDevice.controllers.left.position.set(-0.15649, 1.43474, -0.38368);
-    xrDevice.controllers.left.quaternion.set(
-      0.14766305685043335,
-      0.02471366710960865,
-      -0.0037767395842820406,
-      0.9887216687202454,
-    );
-    new DevUI(xrDevice);
-  }
-}
-
-await setupXR('immersive-ar');
-
-
-
-// INSERT CODE HERE
-let camera, scene, renderer;
-let controller;
-
-
-const clock = new Clock();
-
-// Main loop
-const animate = () => {
-
-  const delta = clock.getDelta();
-  const elapsed = clock.getElapsedTime();
-
-  // can be used in shaders: uniforms.u_time.value = elapsed;
-
-  renderer.render(scene, camera);
 };
 
 
-const init = () => {
-  scene = new Scene();
+const Index = () => {
+  const [visibility, setVisibility] = useState(
+    Object.fromEntries(
+      Object.values(bodyParts).flatMap(subCategories =>
+        Object.values(subCategories).flatMap(parts =>
+          parts.map(name => [name, true])
+        )
+      )
+    )
+  );
 
-  const aspect = window.innerWidth / window.innerHeight;
-  camera = new PerspectiveCamera(75, aspect, 0.1, 10); // meters
-  camera.position.set(0, 1.6, 3);
+  const [hoveredOrgan, setHoveredOrgan] = useState(null);
+  const [cameraPosition, setCameraPosition] = useState([0, 1, 3]);
+  const [isCameraRotationEnabled, setIsCameraRotationEnabled] = useState(true);
+  const [isBackgroundEnabled, setIsBackgroundEnabled] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const light = new AmbientLight(0xffffff, 1.0); // soft white light
-  scene.add(light);
+  var isRotating = isCameraRotationEnabled;
+  var setBackground = isBackgroundEnabled;
 
-  const hemiLight = new HemisphereLight(0xffffff, 0xbbbbff, 3);
-  hemiLight.position.set(0.5, 1, 0.25);
-  scene.add(hemiLight);
+  const toggleSidebar = () => {
+    setIsSidebarOpen(prev => !prev);
+  };
 
-  renderer = new WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate); // requestAnimationFrame() replacement, compatible with XR 
-  renderer.xr.enabled = true;
-  document.body.appendChild(renderer.domElement);
+  const resetCamera = () => {
+    setCameraPosition([0, 1, 3]);
+  };
 
-  /*
-  document.body.appendChild( XRButton.createButton( renderer, {
-    'optionalFeatures': [ 'depth-sensing' ],
-    'depthSensing': { 'usagePreference': [ 'gpu-optimized' ], 'dataFormatPreference': [] }
-  } ) );
-*/
-
-  const xrButton = XRButton.createButton(renderer, {});
-  xrButton.style.backgroundColor = 'skyblue';
-  document.body.appendChild(xrButton);
-
-  const controls = new OrbitControls(camera, renderer.domElement);
-  //controls.listenToKeyEvents(window); // optional
-  controls.target.set(0, 1.6, 0);
-  controls.update();
-
-  // Handle input: see THREE.js webxr_ar_cones
-
-  const geometry = new CylinderGeometry(0, 0.05, 0.2, 32).rotateX(Math.PI / 2);
-
-  const onSelect = (event) => {
-
-    const material = new MeshPhongMaterial({ color: 0xffffff * Math.random() });
-    const mesh = new Mesh(geometry, material);
-    mesh.position.set(0, 0, - 0.3).applyMatrix4(controller.matrixWorld);
-    mesh.quaternion.setFromRotationMatrix(controller.matrixWorld);
-    scene.add(mesh);
-
+  const toggleCameraRotation = () => {
+    setIsCameraRotationEnabled(prev => !prev);
   }
 
-  controller = renderer.xr.getController(0);
-  controller.addEventListener('select', onSelect);
-  scene.add(controller);
-
-
-  window.addEventListener('resize', onWindowResize, false);
-
-}
-
-init();
-
-//
-
-
-function loadData() {
-  new GLTFLoader()
-    .setPath('/')
-    .load('3d-vh-m-united-v1.glb', gltfReader);
-}
-
-
-function gltfReader(gltf) {
-  let testModel = null;
-
-  testModel = gltf.scene;
-
-  if (testModel != null) {
-    console.log("Model loaded:  " + testModel);
-    scene.add(gltf.scene);
-  } else {
-    console.log("Load FAILED.  ");
+  const toggleBackground = () => {
+    setIsBackgroundEnabled(prev => !prev);
   }
-}
 
-loadData();
+  const toggleVisibility = (part) => {
+    setVisibility((prev) => ({ ...prev, [part]: !prev[part] }));
+  }
 
+  // Memoize the lights to prevent re-renders
+  const lights = useMemo(() => (
+    <>
+      <directionalLight
+        castShadow
+        position={[5, 10, 5]}
+        intensity={1}
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+        shadow-camera-far={50}
+        shadow-camera-left={-10}
+        shadow-camera-right={10}
+        shadow-camera-top={10}
+        shadow-camera-bottom={-10}
+      />
+      <ambientLight intensity={0.5} />
+    </>
+  ), []);
 
+  return (
+    <div className="container">
+      <Leva fill hideCopyButton />
+      <ARButton />
+      <Canvas className="canvas-container" shadows>
+        <XR referenceSpace="local-floor">
+          <PerspectiveCamera makeDefault position={cameraPosition} />
+          <OrbitControls
+            target={[0, 1, -2]}
+            enablePan={true}
+            autoRotate={false}
+            autoRotateSpeed={5}
+            zoomToCursor={true}
+          />
+          {lights}
+          <Body
+            position={[0, 1, -2]}
+            visibility={visibility}
+            setHoveredOrgan={setHoveredOrgan}
 
-// camera.position.z = 3;
+          />
+          <ContactShadows />
+        </XR>
+      </Canvas>
 
+      <h1 className="title">Human Body Explorer</h1>
 
+      <aside className={`sidebar sidebar-minimal ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+        {Object.entries(bodyParts).map(([category, subCategories]) => (
+          <div key={category} className="category">
+            <h3 className="category-title">{category}</h3>
+            <hr className="category-divider" />
+            {Object.entries(subCategories).map(([subCategory, parts]) => (
+              <div key={subCategory} className="subcategory">
+                <h4 className="subcategory-title">{subCategory}</h4>
+                <div className="parts-grid">
+                  {parts.map((part) => (
+                    <div
+                      key={part}
+                      onClick={() => toggleVisibility(part)}
+                      className={`part-button ${visibility[part] ? 'part-button-visible' : 'part-button-hidden'}`}
+                    >
+                      {capitalize(part)}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </aside>
+      <button
+        onClick={toggleSidebar}
+        className={`toggle-sidebar-btn ${isSidebarOpen ? 'toggle-sidebar-btn-open' : 'toggle-sidebar-btn-closed'}`}
+      >
+        {isSidebarOpen ? 'x' : 'Menu'}
+      </button>
 
+      {!hoveredOrgan && (
+        <div className="organ-info">
+          <h3 className="organ-title">{hoveredOrgan?.name}</h3>
+          <p className="organ-description">{hoveredOrgan?.description}</p>
+        </div>
+      )}
+    </div>
+  );
+};
 
-function onWindowResize() {
-
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-
-  renderer.setSize(window.innerWidth, window.innerHeight);
-
-}
+export default Index;
