@@ -10,7 +10,7 @@ import * as THREE from 'three';
 
 export function Body({ visibility, setHoveredOrgan, ...props }) {
     const modelPath = process.env.NODE_ENV === 'production'
-        ? '/projet-raug/3d-vh-m-united-v1.glb'
+        ? '/projet-raug-xr/3d-vh-m-united-v1.glb'
         : '/3d-vh-m-united-v1.glb';
     const { nodes, materials } = useGLTF(modelPath);
 

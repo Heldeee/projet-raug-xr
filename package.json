@@ -1,9 +1,9 @@
 {
-  "name": "projet-raug",
+  "name": "projet-raug-xr",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://heldeee.github.io/projet-raug",
+  "homepage": "https://heldeee.github.io/projet-raug-xr",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

@@ -5,7 +5,7 @@ Le **Human Body Explorer** est une application interactive en 3D qui permet aux 
 
 ## Tester l'Application en Ligne
 
-[Human Body Explorer](https://heldeee.github.io/projet-raug/)
+[Human Body Explorer](https://heldeee.github.io/projet-raug-xr/)
 
 ## But
 L'objectif de ce projet est de créer une expérience éducative et interactive pour les utilisateurs, les aidant à mieux comprendre la anatomie humaine à travers des visualisations 3D.
@@ -18,7 +18,7 @@ L'objectif de ce projet est de créer une expérience éducative et interactive 
 
 2. **Naviguez dans le dossier du projet** :
     ```bash
-    cd projet-raug
+    cd projet-raug-xr
     ```
 
 3. **Installez les dépendances** :
