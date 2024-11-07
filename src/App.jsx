@@ -66,7 +66,7 @@ const Index = () => {
   const [cameraPosition, setCameraPosition] = useState([0, 1, 3]);
   const [isCameraRotationEnabled, setIsCameraRotationEnabled] = useState(true);
   const [isBackgroundEnabled, setIsBackgroundEnabled] = useState(true);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   var isRotating = isCameraRotationEnabled;
   var setBackground = isBackgroundEnabled;
@@ -165,13 +165,12 @@ const Index = () => {
         onClick={toggleSidebar}
         className={`toggle-sidebar-btn ${isSidebarOpen ? 'toggle-sidebar-btn-open' : 'toggle-sidebar-btn-closed'}`}
       >
-        {isSidebarOpen ? 'x' : 'Menu'}
+        {isSidebarOpen ? 'Close' : 'Menu'}
       </button>
 
-      {!hoveredOrgan && (
+      {hoveredOrgan && (
         <div className="organ-info">
           <h3 className="organ-title">{hoveredOrgan?.name}</h3>
-          <p className="organ-description">{hoveredOrgan?.description}</p>
         </div>
       )}
     </div>
