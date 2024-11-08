@@ -108,7 +108,7 @@ const Index = () => {
     <div className="container">
       <Leva fill hideCopyButton />
       <ARButton />
-      <Canvas className="canvas-container" shadows gl={{ xr: { enabled: true } }}>
+      <Canvas className="canvas-container" shadows>
         <XR referenceSpace="local-floor">
           <PerspectiveCamera makeDefault position={cameraPosition} />
           <OrbitControls
