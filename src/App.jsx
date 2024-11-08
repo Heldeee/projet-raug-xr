@@ -65,11 +65,9 @@ const Index = () => {
   const [hoveredOrgan, setHoveredOrgan] = useState(null);
   const [cameraPosition, setCameraPosition] = useState([0, 1, 3]);
   const [isCameraRotationEnabled, setIsCameraRotationEnabled] = useState(true);
-  const [isBackgroundEnabled, setIsBackgroundEnabled] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   var isRotating = isCameraRotationEnabled;
-  var setBackground = isBackgroundEnabled;
 
   const toggleSidebar = () => {
     setIsSidebarOpen(prev => !prev);
@@ -81,11 +79,7 @@ const Index = () => {
 
   const toggleCameraRotation = () => {
     setIsCameraRotationEnabled(prev => !prev);
-  }
-
-  const toggleBackground = () => {
-    setIsBackgroundEnabled(prev => !prev);
-  }
+  };
 
   const toggleVisibility = (part) => {
     setVisibility((prev) => ({ ...prev, [part]: !prev[part] }));
@@ -114,7 +108,7 @@ const Index = () => {
     <div className="container">
       <Leva fill hideCopyButton />
       <ARButton />
-      <Canvas className="canvas-container" shadows>
+      <Canvas className="canvas-container" shadows gl={{ xr: { enabled: true } }}>
         <XR referenceSpace="local-floor">
           <PerspectiveCamera makeDefault position={cameraPosition} />
           <OrbitControls
@@ -168,12 +162,14 @@ const Index = () => {
         {isSidebarOpen ? 'Close' : 'Menu'}
       </button>
 
-      {hoveredOrgan && (
-        <div className="organ-info">
-          <h3 className="organ-title">{hoveredOrgan?.name}</h3>
-        </div>
-      )}
-    </div>
+      {
+        hoveredOrgan && (
+          <div className="organ-info">
+            <h3 className="organ-title">{hoveredOrgan?.name}</h3>
+          </div>
+        )
+      }
+    </div >
   );
 };
 
