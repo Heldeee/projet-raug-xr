@@ -50,8 +50,7 @@ const Index = () => {
 
   const [mode, setMode] = useState("free"); // "free" or "single"
   const [hoveredOrgan, setHoveredOrgan] = useState(null);
-  const [cameraPosition, setCameraPosition] = useState([0, 1, 3]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(prev => !prev);
@@ -96,7 +95,7 @@ const Index = () => {
   return (
     <div className="container">
       <Leva fill hideCopyButton />
-      <ARButton />
+      <ARButton className="ar-btn" />
       <Canvas className="canvas-container" shadows>
         <XR referenceSpace="local-floor">
           {lights}
