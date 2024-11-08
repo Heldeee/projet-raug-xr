@@ -279,9 +279,8 @@ body {
 
   .ar-btn {
     position: fixed;
-    top: 70%;
-    height: 10%;
-    width: 40%;
+    top: 80vh;
+    height: fit-content;
   }
 
   /* Mode toggle button */
@@ -394,7 +393,7 @@ body {
 
   .ar-btn {
     position: fixed;
-    top: 70%;
+    top: 80%;
     height: 10%;
     width: 40%;
   }
