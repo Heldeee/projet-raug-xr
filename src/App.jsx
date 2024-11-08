@@ -94,19 +94,8 @@ const Index = () => {
 
   return (
     <div className="container">
-      <Leva fill hideCopyButton />
-      <ARButton className="ar-btn" />
-      <Canvas className="canvas-container" shadows>
-        <XR referenceSpace="local-floor">
-          {lights}
-          <Body position={[0, 1, -2]} visibility={visibility} setHoveredOrgan={setHoveredOrgan} />
-          <ContactShadows />
-        </XR>
-      </Canvas>
-
-      <h1 className="title">Human Body Explorer</h1>
-
-      <aside className={`sidebar sidebar-minimal ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+      <div className="header-container">
+        <h1 className="title">Human Body Explorer</h1>
         <button onClick={toggleMode} className="toggle-mode-btn">
           {mode === "free" ? "All Select Mode" : "Single Select Mode"}
         </button>
@@ -116,6 +105,19 @@ const Index = () => {
         >
           {isSidebarOpen ? 'Close' : 'Menu'}
         </button>
+      </div>
+      <ARButton className="ar-btn" />
+      <Canvas className="canvas-container" shadows>
+        <XR referenceSpace="local-floor">
+          {lights}
+          <Body position={[0, 1, -2]} visibility={visibility} setHoveredOrgan={setHoveredOrgan} />
+          <ContactShadows />
+        </XR>
+      </Canvas>
+
+
+      <aside className={`sidebar sidebar-minimal ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+
         {Object.entries(bodyParts).map(([category, subCategories]) => (
           <div key={category} className="category">
             <h3 className="category-title">{category}</h3>

@@ -28,39 +28,42 @@ body {
   height: 100%;
 }
 
-/* Title Styling */
-.title {
+.header-container {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
+  display: flex;
+  align-items: center;
+  background: rgb(107, 221, 107);
   padding: 10px;
-  background: rgba(123, 199, 123, 0.8);
-  text-align: center;
-  font-family: Arial;
-  font-size: small;
-  color: white;
+  width: 100%;
   z-index: 10;
+  box-sizing: border-box;
+}
+
+/* Title Styling */
+.title {
+  font-family: Arial;
+  font-size: large;
+  color: white;
   user-select: none;
+  margin-right: 20px;
 }
 
 .ar-btn {
   position: fixed;
-  top: 50%;
-  height: 10%;
-  width: 40%;
+  top: 80vh;
+  height: fit-content;
 }
 
 /* Mode toggle button */
 .toggle-mode-btn {
-  position: relative;
-  right: inherit;
   background-color: #28a745;
   color: #fff;
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  margin-bottom: 20px;
+  padding: 8px 12px;
   transition: background-color 0.3s ease;
   font-size: 1em;
   user-select: none;
@@ -87,7 +90,9 @@ body {
 }
 
 .toggle-sidebar-btn-open {
-  position: inherit;
+  position: fixed;
+  background-color: lightcoral;
+  top: 1%;
 }
 
 .toggle-sidebar-btn-closed {
@@ -107,7 +112,7 @@ body {
   position: fixed;
   width: 100%;
   padding: 10px;
-  background: #f0f0f0;
+  background: rgba(255, 255, 255, 0.1);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
   height: 100vh;
@@ -117,7 +122,7 @@ body {
 }
 
 .sidebar-open {
-  top: 100px;
+  top: 10vh;
 }
 
 .sidebar-closed {
@@ -132,7 +137,7 @@ body {
   user-select: none;
   font-size: 18px;
   margin-bottom: 10px;
-  color: #555;
+  color: white;
   text-align: center;
 }
 
@@ -148,7 +153,7 @@ body {
   font-size: 14px;
   margin-bottom: 8px;
   user-select: none;
-  color: #555;
+  color: white;
 }
 
 .parts-grid {
@@ -165,6 +170,8 @@ body {
   border-radius: 5px;
   user-select: none;
   transition: background-color 0.2s ease;
+  color: #fff;
+  font-weight: bold;
 }
 
 .part-button-visible {
@@ -270,6 +277,27 @@ body {
     padding: 0;
   }
 
+  .header-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    background: rgb(107, 221, 107);
+    padding: 10px;
+    width: 100%;
+    z-index: 10;
+    box-sizing: border-box;
+  }
+
+  .title {
+    font-family: Arial;
+    font-size: small;
+    color: white;
+    user-select: none;
+    margin-right: fill;
+  }
+
   .container {
     height: 100vh;
     width: 100vw;
@@ -285,14 +313,12 @@ body {
 
   /* Mode toggle button */
   .toggle-mode-btn {
-    position: fixed;
-    top: 10px;
     background-color: #28a745;
     color: #fff;
     border: none;
     border-radius: 20px;
     cursor: pointer;
-    margin-bottom: 20px;
+    padding: 8px 12px;
     transition: background-color 0.3s ease;
     font-size: 1em;
     user-select: none;
@@ -319,7 +345,8 @@ body {
   }
 
   .toggle-sidebar-btn-open {
-    position: inherit;
+    position: fixed;
+    background-color: lightcoral;
   }
 
   .toggle-sidebar-btn-closed {
@@ -330,33 +357,25 @@ body {
     border-radius: 20px 0 0 20px;
   }
 
-  .toggle-sidebar-btn-open:hover {
-    background-color: lightcoral;
-  }
-
   .sidebar {
     position: fixed;
     width: 100%;
     padding: 10px;
-    background: #f0f0f0;
+    background: rgba(255, 255, 255, 0.1);
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
     height: 100vh;
-    transition: top 0.3s ease;
+    transition: top 0.1 ease;
     z-index: 20;
     border-radius: 20px;
   }
 
   .sidebar-open {
-    top: 0;
+    top: 10%;
   }
 
   .sidebar-closed {
     top: 100%;
-  }
-
-  .title {
-    font-size: 18px;
   }
 
   .category-title,
@@ -366,107 +385,7 @@ body {
   }
 
   .organ-info {
-    width: 80%;
-  }
-}
-
-@media (max-width: 20%) {
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    overflow-x: hidden;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-  }
-
-  .container {
-    height: 100vh;
-    width: 100vw;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .ar-btn {
-    position: fixed;
-    top: 80%;
-    height: 10%;
-    width: 40%;
-  }
-
-  /* Mode toggle button */
-  .toggle-mode-btn {
-    position: fixed;
-    top: 10px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    transition: background-color 0.3s ease;
-    font-size: 1em;
-    user-select: none;
-  }
-
-  .toggle-mode-btn:hover {
-    background-color: #218838;
-  }
-
-  /* Toggle Sidebar Button */
-  .toggle-sidebar-btn {
-    position: inherit;
-    right: 10px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    transition: background-color 0.3s ease;
-    transition: top 0.3s ease;
-    font-size: 1em;
-    user-select: none;
-  }
-
-  .toggle-sidebar-btn-open {
-    position: inherit;
-  }
-
-  .toggle-sidebar-btn-closed {
-    position: fixed;
-    right: 0px;
-    bottom: 1%;
-    transition: top;
-    border-radius: 20px 0 0 20px;
-  }
-
-  .toggle-sidebar-btn-open:hover {
-    background-color: lightcoral;
-  }
-
-  .sidebar {
-    position: fixed;
     width: 100%;
-    padding: 10px;
-    background: #f0f0f0;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-    height: 100vh;
-    transition: top 0.3s ease;
-    z-index: 20;
-    border-radius: 20px;
-  }
-
-  .sidebar-open {
-    top: 0;
-  }
-
-  .sidebar-closed {
-    top: 100%;
+    right: inherit;
   }
 }
