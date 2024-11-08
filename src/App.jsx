@@ -71,7 +71,14 @@ const Index = () => {
 
   const toggleMode = () => {
     setMode((prevMode) => (prevMode === "free" ? "single" : "free"));
+    if (mode === "single") {
+      activeAll();
+    }
   };
+
+  const activeAll = () => {
+    setVisibility(Object.fromEntries(Object.keys(visibility).map(key => [key, true])));
+  }
 
   // Memoize the lights to prevent re-renders
   const lights = useMemo(() => (
@@ -97,7 +104,7 @@ const Index = () => {
       <div className="header-container">
         <h1 className="title">Human Body Explorer</h1>
         <button onClick={toggleMode} className="toggle-mode-btn">
-          {mode === "free" ? "All Select Mode" : "Single Select Mode"}
+          {mode === "free" ? "All" : "Single"}
         </button>
         <button
           onClick={toggleSidebar}
