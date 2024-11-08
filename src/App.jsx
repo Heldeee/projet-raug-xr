@@ -113,7 +113,7 @@ const Index = () => {
   return (
     <div className="container">
       <Leva fill hideCopyButton />
-      <VRButton />
+      <ARButton />
       <Canvas className="canvas-container" shadows>
         <XR referenceSpace="local-floor">
           <PerspectiveCamera makeDefault position={cameraPosition} />
