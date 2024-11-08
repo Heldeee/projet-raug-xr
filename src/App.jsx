@@ -1,24 +1,15 @@
-import React, { useState, useEffect, useMemo } from "react";
-import {
-  ContactShadows,
-  Environment,
-  OrbitControls,
-  PerspectiveCamera,
-} from "@react-three/drei";
-import { Canvas, useThree } from "@react-three/fiber";
-import { Leva, useControls } from "leva";
+import React, { useState, useMemo } from "react";
+import { ContactShadows, Environment, OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { Leva } from "leva";
 import { Body } from "./components/Models/Body";
-import { XR, ARButton, VRButton } from '@react-three/xr';
-import * as THREE from "three";
-import { useRef } from 'react';
+import { XR, ARButton } from '@react-three/xr';
 import './App.css';
 
 const capitalize = (str) => str.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 
 const bodyParts = {
-  Skin: {
-    Surface: ["skin"]
-  },
+  Skin: { Surface: ["skin"] },
   "Nervous System": {
     "Central Nervous System": ["brain", "spinal_cord"],
     "Sensory Organs": ["eyes"]
@@ -42,14 +33,9 @@ const bodyParts = {
     "Immune System": ["palatine_tonsil"],
     "Other": ["hyoid", "cricoarytenoid"]
   },
-  "Reproductive System": {
-    "Male": ["prostate"],
-  },
-  "Vascular System": {
-    "Heart and Blood Vessels": ["heart", "blood_vasculature"]
-  }
+  "Reproductive System": { "Male": ["prostate"] },
+  "Vascular System": { "Heart and Blood Vessels": ["heart", "blood_vasculature"] }
 };
-
 
 const Index = () => {
   const [visibility, setVisibility] = useState(
@@ -62,28 +48,31 @@ const Index = () => {
     )
   );
 
+  const [mode, setMode] = useState("free"); // "free" or "single"
   const [hoveredOrgan, setHoveredOrgan] = useState(null);
   const [cameraPosition, setCameraPosition] = useState([0, 1, 3]);
-  const [isCameraRotationEnabled, setIsCameraRotationEnabled] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  var isRotating = isCameraRotationEnabled;
 
   const toggleSidebar = () => {
     setIsSidebarOpen(prev => !prev);
   };
 
-  const resetCamera = () => {
-    setCameraPosition([0, 1, 3]);
-  };
-
-  const toggleCameraRotation = () => {
-    setIsCameraRotationEnabled(prev => !prev);
-  };
-
   const toggleVisibility = (part) => {
-    setVisibility((prev) => ({ ...prev, [part]: !prev[part] }));
-  }
+    if (mode === "free") {
+      setVisibility(prev => ({ ...prev, [part]: !prev[part] }));
+    } else if (mode === "single") {
+      setVisibility(prev => {
+        const updatedVisibility = Object.fromEntries(
+          Object.keys(prev).map(key => [key, key === part ? true : false])
+        );
+        return updatedVisibility;
+      });
+    }
+  };
+
+  const toggleMode = () => {
+    setMode((prevMode) => (prevMode === "free" ? "single" : "free"));
+  };
 
   // Memoize the lights to prevent re-renders
   const lights = useMemo(() => (
@@ -108,23 +97,10 @@ const Index = () => {
     <div className="container">
       <Leva fill hideCopyButton />
       <ARButton />
-      <Canvas className="canvas-container" shadows gl={{ xr: { enabled: true } }}>
+      <Canvas className="canvas-container" shadows>
         <XR referenceSpace="local-floor">
-          <PerspectiveCamera makeDefault position={cameraPosition} />
-          <OrbitControls
-            target={[0, 1, -2]}
-            enablePan={true}
-            autoRotate={false}
-            autoRotateSpeed={5}
-            zoomToCursor={true}
-          />
           {lights}
-          <Body
-            position={[0, 1, -2]}
-            visibility={visibility}
-            setHoveredOrgan={setHoveredOrgan}
-
-          />
+          <Body position={[0, 1, -2]} visibility={visibility} setHoveredOrgan={setHoveredOrgan} />
           <ContactShadows />
         </XR>
       </Canvas>
@@ -132,6 +108,15 @@ const Index = () => {
       <h1 className="title">Human Body Explorer</h1>
 
       <aside className={`sidebar sidebar-minimal ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+        <button onClick={toggleMode} className="toggle-mode-btn">
+          {mode === "free" ? "All Select Mode" : "Single Select Mode"}
+        </button>
+        <button
+          onClick={toggleSidebar}
+          className={`toggle-sidebar-btn ${isSidebarOpen ? 'toggle-sidebar-btn-open' : 'toggle-sidebar-btn-closed'}`}
+        >
+          {isSidebarOpen ? 'Close' : 'Menu'}
+        </button>
         {Object.entries(bodyParts).map(([category, subCategories]) => (
           <div key={category} className="category">
             <h3 className="category-title">{category}</h3>
@@ -155,21 +140,14 @@ const Index = () => {
           </div>
         ))}
       </aside>
-      <button
-        onClick={toggleSidebar}
-        className={`toggle-sidebar-btn ${isSidebarOpen ? 'toggle-sidebar-btn-open' : 'toggle-sidebar-btn-closed'}`}
-      >
-        {isSidebarOpen ? 'Close' : 'Menu'}
-      </button>
 
-      {
-        hoveredOrgan && (
-          <div className="organ-info">
-            <h3 className="organ-title">{hoveredOrgan?.name}</h3>
-          </div>
-        )
-      }
-    </div >
+
+      {hoveredOrgan && (
+        <div className="organ-info">
+          <h3 className="organ-title">{hoveredOrgan?.name}</h3>
+        </div>
+      )}
+    </div>
   );
 };
 

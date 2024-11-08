@@ -44,10 +44,65 @@ body {
   user-select: none;
 }
 
+.ar-btn {
+  left: 50%;
+  top: 50%;
+}
+
+/* Mode toggle button */
+.toggle-mode-btn {
+  position: relative;
+  right: inherit;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+  font-size: 1em;
+  user-select: none;
+}
+
+.toggle-mode-btn:hover {
+  background-color: #218838;
+}
+
+/* Toggle Sidebar Button */
+.toggle-sidebar-btn {
+  position: inherit;
+  right: 10px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+  transition: top 0.3s ease;
+  font-size: 1em;
+  user-select: none;
+}
+
+.toggle-sidebar-btn-open {
+  position: inherit;
+}
+
+.toggle-sidebar-btn-closed {
+  position: fixed;
+  right: 0px;
+  bottom: 1%;
+  transition: top;
+  border-radius: 20px 0 0 20px;
+}
+
+.toggle-sidebar-btn-open:hover {
+  background-color: lightcoral;
+}
+
 /* Sidebar Styling */
 .sidebar {
   position: fixed;
-  top: 20%;
   width: 100%;
   padding: 10px;
   background: #f0f0f0;
@@ -60,11 +115,11 @@ body {
 }
 
 .sidebar-open {
-  top: 0;
+  top: 100px;
 }
 
 .sidebar-closed {
-  top: -1000px;
+  top: 100%;
 }
 
 .category {
@@ -96,13 +151,12 @@ body {
 
 .parts-grid {
   display: flex;
-  flex-wrap: wrap;
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
 .part-button {
-  width: calc(33% - 8px);
-  margin: 5px 0;
+  width: 100%;
   padding: 8px;
   cursor: pointer;
   text-align: center;
@@ -117,30 +171,6 @@ body {
 
 .part-button-hidden {
   background-color: lightcoral;
-}
-
-/* Toggle Sidebar Button */
-.toggle-sidebar-btn {
-  position: fixed;
-  top: 10px;
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  color: white;
-  background: darkgray;
-  border: none;
-  border-radius: 5px;
-  user-select: none;
-  transition: left 0.3s ease;
-  z-index: 30;
-}
-
-.toggle-sidebar-btn-open {
-  left: 10px;
-}
-
-.toggle-sidebar-btn-closed {
-  left: 10px;
 }
 
 /* Controls */

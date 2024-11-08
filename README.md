@@ -63,6 +63,7 @@ L'objectif de ce projet est de créer une expérience éducative et interactive 
 - [Interactive Cubes](https://threejs.org/examples/#webgl_interactive_cubes) 
 - Articles et ressources sur l'anatomie humaine
 - Wikipedia
+- Modeles 3D du corps humain utilisé [3D Reference Object Library](https://humanatlas.io/3d-reference-library?version=2.1&organ=Palatine%20Tonsil)
 
 ## License
 
