@@ -13,7 +13,7 @@ L'objectif de ce projet est de créer une expérience éducative et interactive 
 ## Mode d'Emploi
 1. **Clonez le dépôt** :
    ```bash
-   git clone https://github.com/Heldeee/projet-raug.git
+   git clone https://github.com/Heldeee/projet-raug-xr.git
    ```
 
 2. **Naviguez dans le dossier du projet** :
