@@ -1,9 +1,13 @@
-import React, { useState, useMemo } from "react";
-import { ContactShadows, Environment, OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import { Leva } from "leva";
+import * as THREE from "three";
+import React, { useState, useMemo, useEffect, useRef } from "react";
+import { ContactShadows, useFBX } from "@react-three/drei";
+import { Canvas, useThree } from "@react-three/fiber";
 import { Body } from "./components/Models/Body";
-import { XR, ARButton } from '@react-three/xr';
+import { Dance } from "./components/Models/Dance";
+import {
+  XR,
+  ARButton,
+} from '@react-three/xr';
 import './App.css';
 
 const capitalize = (str) => str.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
@@ -48,7 +52,9 @@ const Index = () => {
     )
   );
 
-  const [mode, setMode] = useState("free"); // "free" or "single"
+
+
+  const [mode, setMode] = useState("free");
   const [hoveredOrgan, setHoveredOrgan] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
@@ -118,11 +124,10 @@ const Index = () => {
         <XR referenceSpace="local-floor">
           {lights}
           <Body position={[0, 1, -2]} visibility={visibility} setHoveredOrgan={setHoveredOrgan} />
+          <Dance />
           <ContactShadows />
         </XR>
       </Canvas>
-
-
       <aside className={`sidebar sidebar-minimal ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
 
         {Object.entries(bodyParts).map(([category, subCategories]) => (
