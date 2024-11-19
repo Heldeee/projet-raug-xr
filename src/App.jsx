@@ -2,7 +2,6 @@ import * as THREE from "three";
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { ContactShadows, useFBX } from "@react-three/drei";
 import { Canvas, useThree } from "@react-three/fiber";
-import { Leva, useControls } from "leva";
 import { Body } from "./components/Models/Body";
 import { Dance } from "./components/Models/Dance";
 import {
@@ -59,8 +58,6 @@ const Index = () => {
   const [hoveredOrgan, setHoveredOrgan] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const { zRotation } = useControls({ zRotation: { value: Math.PI / 2, min: 0, max: Math.PI * 2 } });
-  zRotation
 
   const toggleSidebar = () => {
     setIsSidebarOpen(prev => !prev);
@@ -133,12 +130,12 @@ const Index = () => {
             setHoveredOrgan={setHoveredOrgan}
           />
           <Dance
-            position={[1, 1, -4]}
-            rotation={[Math.PI / 2, 0, zRotation]}
+            position={[1, 0, -4]}
+            rotation={[Math.PI / 2, 0, 0]}
           />
           <Dance
-            position={[-1, 1, -4]}
-            rotation={[Math.PI / 2, 0, zRotation]}
+            position={[-1, 0, -4]}
+            rotation={[Math.PI / 2, 0, 0]}
           />
           <ContactShadows />
         </XR>
