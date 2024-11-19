@@ -6,7 +6,10 @@ import * as THREE from 'three';
 
 export function Dance(props) {
   const group = useRef();
-  const { scene, animations } = useGLTF('/scene.glb');
+  const modelPath = process.env.NODE_ENV === 'production'
+    ? '/projet-raug-xr/dance.glb'
+    : '/dance.glb';
+  const { scene, animations } = useGLTF(modelPath);
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes, materials } = useGraph(clone);
   const { actions } = useAnimations(animations, group);
@@ -40,4 +43,4 @@ export function Dance(props) {
   );
 }
 
-useGLTF.preload('/scene.glb');
+useGLTF.preload('/dance.glb');
