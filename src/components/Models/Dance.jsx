@@ -1,48 +1,43 @@
+import React, { useEffect, useRef } from 'react';
+import { useGraph } from '@react-three/fiber';
+import { useGLTF, useAnimations } from '@react-three/drei';
+import { SkeletonUtils } from 'three-stdlib';
 import * as THREE from 'three';
-import React, { useState, useEffect, useRef } from 'react';
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 
-export function Dance() {
-    const fbxLoader = useRef(new FBXLoader());
-    const [model, setModel] = useState(null);
-    const mixer = useRef(null);
+export function Dance(props) {
+  const group = useRef();
+  const { scene, animations } = useGLTF('/scene.glb');
+  const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene]);
+  const { nodes, materials } = useGraph(clone);
+  const { actions } = useAnimations(animations, group);
 
-    useEffect(() => {
-        const path = process.env.NODE_ENV === 'production'
-            ? '/projet-raug-xr/GangnamStyle.fbx'
-            : '/GangnamStyle.fbx';
-        fbxLoader.current.load(
-            path,
-            (object) => {
-                setModel(object);
-                mixer.current = new THREE.AnimationMixer(object);
-                const action = mixer.current.clipAction(object.animations[0]);
-                action.play();
-            },
-            (xhr) => {
-                console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
-            },
-            (error) => {
-                console.log(error);
-            }
-        );
-    }, []);
+  useEffect(() => {
+    const actionKeys = Object.keys(actions);
+    if (actionKeys.length > 0) {
+      actions[actionKeys[0]].play();
+    }
+  }, [actions, clone]);
 
-    useEffect(() => {
-        if (!mixer.current) return;
+  Object.values(materials).forEach(material => {
+    material.depthWrite = true;
+    material.depthTest = true;
+    material.needsUpdate = true;
+  });
 
-        const clock = new THREE.Clock();
-        const animate = () => {
-            requestAnimationFrame(animate);
-            const delta = clock.getDelta();
-            mixer.current.update(delta);
-        };
-        animate();
-    }, [model]);
+  return (
+    <group ref={group} {...props} dispose={null}>
+      <group name="Armature" scale={0.01}>
+        <primitive object={nodes.mixamorigHips} />
+        <skinnedMesh name="Ch16_Body1" geometry={nodes.Ch16_Body1.geometry} material={materials.Ch16_Body} skeleton={nodes.Ch16_Body1.skeleton} />
+        <skinnedMesh name="Ch16_Cap" geometry={nodes.Ch16_Cap.geometry} material={materials.Ch16_body1} skeleton={nodes.Ch16_Cap.skeleton} />
+        <skinnedMesh name="Ch16_Eyelashes" geometry={nodes.Ch16_Eyelashes.geometry} material={materials.Ch16_eyelashes} skeleton={nodes.Ch16_Eyelashes.skeleton} />
+        <skinnedMesh name="Ch16_Mask" geometry={nodes.Ch16_Mask.geometry} material={materials.Ch16_body1} skeleton={nodes.Ch16_Mask.skeleton} />
+        <skinnedMesh name="Ch16_Pants" geometry={nodes.Ch16_Pants.geometry} material={materials.Ch16_Body} skeleton={nodes.Ch16_Pants.skeleton} />
+        <skinnedMesh name="Ch16_Shirt" geometry={nodes.Ch16_Shirt.geometry} material={materials.Ch16_Body} skeleton={nodes.Ch16_Shirt.skeleton} />
+        <skinnedMesh name="Ch16_Shoes" geometry={nodes.Ch16_Shoes.geometry} material={materials.Ch16_body1} skeleton={nodes.Ch16_Shoes.skeleton} />
+      </group>
+    </group>
+  );
+}
 
-    return (
-        <group>
-            {model && <primitive object={model} />}
-        </group>
-    );
-};
+useGLTF.preload('/scene.glb');

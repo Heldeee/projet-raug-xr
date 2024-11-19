@@ -2,6 +2,7 @@ import * as THREE from "three";
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { ContactShadows, useFBX } from "@react-three/drei";
 import { Canvas, useThree } from "@react-three/fiber";
+import { Leva, useControls } from "leva";
 import { Body } from "./components/Models/Body";
 import { Dance } from "./components/Models/Dance";
 import {
@@ -56,7 +57,10 @@ const Index = () => {
 
   const [mode, setMode] = useState("free");
   const [hoveredOrgan, setHoveredOrgan] = useState(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const { zRotation } = useControls({ zRotation: { value: Math.PI / 2, min: 0, max: Math.PI * 2 } });
+  zRotation
 
   const toggleSidebar = () => {
     setIsSidebarOpen(prev => !prev);
@@ -106,7 +110,7 @@ const Index = () => {
   ), []);
 
   return (
-    <div className="container">
+    <div className="container" >
       <div className="header-container">
         <h1 className="title">Human Body Explorer</h1>
         <button onClick={toggleMode} className="toggle-mode-btn">
@@ -123,8 +127,19 @@ const Index = () => {
       <Canvas className="canvas-container" shadows>
         <XR referenceSpace="local-floor">
           {lights}
-          <Body position={[0, 1, -2]} visibility={visibility} setHoveredOrgan={setHoveredOrgan} />
-          <Dance />
+          <Body
+            position={[0, 1, -2]}
+            visibility={visibility}
+            setHoveredOrgan={setHoveredOrgan}
+          />
+          <Dance
+            position={[1, 1, -4]}
+            rotation={[Math.PI / 2, 0, zRotation]}
+          />
+          <Dance
+            position={[-1, 1, -4]}
+            rotation={[Math.PI / 2, 0, zRotation]}
+          />
           <ContactShadows />
         </XR>
       </Canvas>
@@ -160,7 +175,7 @@ const Index = () => {
           <h3 className="organ-title">{hoveredOrgan?.name}</h3>
         </div>
       )}
-    </div>
+    </div >
   );
 };
 
