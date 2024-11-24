@@ -125,6 +125,9 @@ const Index = () => {
         >
           {isSidebarOpen ? 'Close' : 'Menu'}
         </button>
+        {hoveredOrgan && (
+          <h1 className="organ-title">{hoveredOrgan?.name}</h1>
+        )}
       </div>
       <ARButton className="ar-btn" />
       <Canvas className="canvas-container" shadows>
@@ -146,9 +149,6 @@ const Index = () => {
           <ContactShadows />
         </XR>
       </Canvas>
-      {hoveredOrgan && (
-        <h1 className="organ-title">{hoveredOrgan?.name}</h1>
-      )}
       <aside className={`sidebar sidebar-minimal ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
 
         {Object.entries(bodyParts).map(([category, subCategories]) => (
