@@ -57,6 +57,7 @@ const Index = () => {
   const [mode, setMode] = useState("free");
   const [hoveredOrgan, setHoveredOrgan] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [danceAnimation, setDanceAnimation] = useState(false);
 
 
   const toggleSidebar = () => {
@@ -87,6 +88,10 @@ const Index = () => {
     setVisibility(Object.fromEntries(Object.keys(visibility).map(key => [key, true])));
   }
 
+  const activeDancer = () => {
+    setDanceAnimation(true);
+  }
+
   // Memoize the lights to prevent re-renders
   const lights = useMemo(() => (
     <>
@@ -105,6 +110,7 @@ const Index = () => {
       <ambientLight intensity={0.5} />
     </>
   ), []);
+
 
   return (
     <div className="container" >
@@ -130,16 +136,19 @@ const Index = () => {
             setHoveredOrgan={setHoveredOrgan}
           />
           <Dance
-            position={[1, 0, -4]}
-            rotation={[Math.PI / 2, 0, 0]}
+            position={[1, 0, 2]}
+            rotation={[Math.PI / 2, 0, Math.PI]}
           />
           <Dance
-            position={[-1, 0, -4]}
-            rotation={[Math.PI / 2, 0, 0]}
+            position={[-1, 0, 2]}
+            rotation={[Math.PI / 2, 0, Math.PI]}
           />
           <ContactShadows />
         </XR>
       </Canvas>
+      {hoveredOrgan && (
+        <h1 className="organ-title">{hoveredOrgan?.name}</h1>
+      )}
       <aside className={`sidebar sidebar-minimal ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
 
         {Object.entries(bodyParts).map(([category, subCategories]) => (
@@ -165,13 +174,6 @@ const Index = () => {
           </div>
         ))}
       </aside>
-
-
-      {hoveredOrgan && (
-        <div className="organ-info">
-          <h3 className="organ-title">{hoveredOrgan?.name}</h3>
-        </div>
-      )}
     </div >
   );
 };

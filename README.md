@@ -46,8 +46,11 @@ L'objectif de ce projet est de créer une expérience éducative et interactive 
 - leo.devin:
     - Création de la structure de l'application
     - UX/UI Design
+    - Menu de navigation
     - Deploiement de l'application sur GitHub Pages
     - Documentation
+    - Animation des personnages dancant
+    - Adaptation WebXR
 
 - phu-hung.dang:
     - Recherche et intégration des modèles 3D
@@ -64,6 +67,7 @@ L'objectif de ce projet est de créer une expérience éducative et interactive 
 - Articles et ressources sur l'anatomie humaine
 - Wikipedia
 - Modeles 3D du corps humain utilisé [3D Reference Object Library](https://humanatlas.io/3d-reference-library?version=2.1&organ=Palatine%20Tonsil)
+- [Mixamo pour les animations des personnages et la dance](https://www.mixamo.com/)
 
 ## License
 
