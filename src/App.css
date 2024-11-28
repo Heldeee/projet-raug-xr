@@ -69,6 +69,18 @@ body {
   user-select: none;
 }
 
+.toggle-sound-btn {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: background-color 0.3s ease;
+  font-size: 1em;
+  user-select: none;
+}
+
 .toggle-mode-btn:hover {
   background-color: #218838;
 }
@@ -385,4 +397,20 @@ body {
   .part-button {
     font-size: 12px;
   }
+
+  .overlay {
+    position: fixed;
+    /* Ensure it stays in one place, relative to the viewport */
+    top: 50%;
+    /* Center vertically */
+    left: 50%;
+    /* Center horizontally */
+    transform: translate(-50%, -50%);
+    /* Perfect centering */
+    z-index: 1000;
+    /* Place it above other elements */
+    pointer-events: none;
+    /* Ensure it doesn't block interactions */
+  }
+
 }

@@ -41,6 +41,45 @@ const bodyParts = {
   "Vascular System": { "Heart and Blood Vessels": ["heart", "blood_vasculature"] }
 };
 
+const useBackgroundSound = (mp3) => {
+  const [isSoundActive, setIsSoundActive] = useState(false);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    const listener = new THREE.AudioListener();
+    const audio = new THREE.Audio(listener);
+    const audioLoader = new THREE.AudioLoader();
+
+    audioLoader.load(mp3, (buffer) => {
+      audio.setBuffer(buffer);
+      audio.setLoop(true);
+      audio.setVolume(0.5);
+      audioRef.current = audio;
+    });
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.stop();
+        audioRef.current = null;
+      }
+    };
+  }, [mp3]);
+
+  const toggleSound = () => {
+    if (audioRef.current) {
+      if (isSoundActive) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsSoundActive(!isSoundActive);
+    }
+  };
+
+  return { isSoundActive, toggleSound };
+};
+
+
 const Index = () => {
   const [visibility, setVisibility] = useState(
     Object.fromEntries(
@@ -52,13 +91,10 @@ const Index = () => {
     )
   );
 
-
-
   const [mode, setMode] = useState("free");
   const [hoveredOrgan, setHoveredOrgan] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [danceAnimation, setDanceAnimation] = useState(false);
-
 
   const toggleSidebar = () => {
     setIsSidebarOpen(prev => !prev);
@@ -76,6 +112,7 @@ const Index = () => {
       });
     }
   };
+  const { isSoundActive, toggleSound } = useBackgroundSound("background.mp3");
 
   const toggleMode = () => {
     setMode((prevMode) => (prevMode === "free" ? "single" : "free"));
@@ -113,11 +150,14 @@ const Index = () => {
 
 
   return (
-    <div className="container" >
+    <div className="container">
       <div className="header-container">
         <h1 className="title">Human Body Explorer</h1>
         <button onClick={toggleMode} className="toggle-mode-btn">
           {mode === "free" ? "All" : "Single"}
+        </button>
+        <button onClick={toggleSound} className="toggle-sound-btn">
+          {isSoundActive ? "Sound Off" : "Sound On"}
         </button>
         <button
           onClick={toggleSidebar}
@@ -125,10 +165,12 @@ const Index = () => {
         >
           {isSidebarOpen ? 'Close' : 'Menu'}
         </button>
-        {hoveredOrgan && (
-          <h1 className="organ-title">{hoveredOrgan?.name}</h1>
-        )}
       </div>
+      {hoveredOrgan && (
+        <div className="overlay">
+          <h1 className="organ-title">{hoveredOrgan?.name}</h1>
+        </div>
+      )}
       <ARButton className="ar-btn" />
       <Canvas className="canvas-container" shadows>
         <XR referenceSpace="local-floor">
@@ -150,7 +192,6 @@ const Index = () => {
         </XR>
       </Canvas>
       <aside className={`sidebar sidebar-minimal ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
-
         {Object.entries(bodyParts).map(([category, subCategories]) => (
           <div key={category} className="category">
             <h3 className="category-title">{category}</h3>
@@ -174,7 +215,7 @@ const Index = () => {
           </div>
         ))}
       </aside>
-    </div >
+    </div>
   );
 };
 
