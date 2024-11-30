@@ -7,9 +7,6 @@ Le **Human Body Explorer** est une application interactive en 3D qui permet aux 
 
 [Human Body Explorer](https://heldeee.github.io/projet-raug-xr/)
 
-## But
-L'objectif de ce projet est de créer une expérience éducative et interactive pour les utilisateurs, les aidant à mieux comprendre la anatomie humaine à travers des visualisations 3D.
-
 ## Mode d'Emploi
 1. **Clonez le dépôt** :
    ```bash
@@ -31,10 +28,79 @@ L'objectif de ce projet est de créer une expérience éducative et interactive 
     npm start
     ```
 
+## But
+L'objectif de ce projet est de créer une expérience éducative et interactive pour les utilisateurs, les aidant à mieux comprendre la anatomie humaine à travers des visualisations 3D.
+
+## Fonctionnalités Principales
+
+### 1. Visualisation 3D Interactive
+- Modèle 3D détaillé du corps humain
+- Rotation et zoom libre du modèle
+- Visualisation en réalité augmentée (AR) via WebXR
+- Illumination dynamique pour une meilleure visibilité
+
+### 2. Navigation et Contrôle
+- Menu latéral intuitif pour accéder aux différents systèmes du corps
+- Mode de visualisation "Libre" ou "Unique"
+  - Mode Libre : Activation/désactivation multiple d'organes
+  - Mode Unique : Focus sur un seul organe à la fois
+- Interface responsive adaptée mobile/desktop
+
+### 3. Systèmes Anatomiques Explorables
+- Système nerveux (cerveau, moelle épinière)
+- Système squelettique
+- Système digestif
+- Système respiratoire
+- Système urinaire
+- Système reproducteur
+- Système vasculaire
+- Peau et tissus externes
+
+### 4. Expérience Multimédia
+- Fond sonore d'ambiance activable/désactivable
+- Animations de personnages dansants
+- Affichage des noms d'organes au survol
+- Support multilingue (Français/Anglais)
+
+### 5. Fonctionnalités Techniques
+- Application Web Progressive (PWA)
+- Support de la réalité augmentée
+- Responsive design
+- Performance optimisée pour web mobile
+- Déploiement continu sur GitHub Pages
 
 ## Visualisation
 
-![](https://github.com/Heldeee/projet-raug/blob/main/humanbodyexplorer.gif?raw=true)
+### Mode All
+<table>
+  <tr>
+    <td width="50%">
+      <img src="./image1.png" alt="Mode All sans menu" width="100%">
+      <p align="center">Sans menu</p>
+    </td>
+    <td width="50%">
+      <img src="./image2.png" alt="Mode All avec menu" width="100%">
+      <p align="center">Avec menu</p>
+    </td>
+  </tr>
+</table>
+
+### Mode Single
+<table>
+  <tr>
+    <td width="50%">
+      <img src="./image4.png" alt="Mode Single sans menu" width="100%">
+      <p align="center">Sans menu</p>
+    </td>
+    <td width="50%">
+      <img src="./image3.png" alt="Mode Single avec menu" width="100%">
+      <p align="center">Avec menu</p>
+    </td>
+  </tr>
+</table>
+
+## Feature Surprise 🎵
+Explorez l'anatomie humaine en rythme ! Des danseurs virtuels se cachent dans votre découverte, ajoutant une touche de divertissement à votre expérience d'apprentissage. Allez-vous les trouver ?! 💃🕺
 
 ## Membre du groupe
 
@@ -56,8 +122,8 @@ L'objectif de ce projet est de créer une expérience éducative et interactive 
     - Recherche et intégration des modèles 3D
     - Implémentation de la logique de l'application
     - Documentation
+    - Sound Design
 
-## Sources d'inspiration
 
 ## Sources d'Inspiration
 - Documentation officielle de [THREE.js](https://threejs.org/docs/index.html#manual/en/introduction/Introduction)
