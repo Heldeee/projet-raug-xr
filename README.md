@@ -124,6 +124,12 @@ Explorez l'anatomie humaine en rythme ! Des danseurs virtuels se cachent dans vo
     - Documentation
     - Sound Design
 
+## Problemes rencontres
+
+- Probleme niveaux des lumieres
+- Probleme au niveau de la Camera sur iOS
+- Probleme de test sur iOS, debug assez complexes
+- Probleme d'adaptation de React avec WebXR
 
 ## Sources d'Inspiration
 - Documentation officielle de [THREE.js](https://threejs.org/docs/index.html#manual/en/introduction/Introduction)
