@@ -35,10 +35,59 @@ body {
   display: flex;
   align-items: center;
   background: rgb(107, 221, 107);
-  padding: 10px;
+  padding: 5px;
   width: 100%;
   z-index: 10;
   box-sizing: border-box;
+}
+
+.header-container button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 5px 8px;
+  transition: background-color 0.3s ease;
+  font-size: 0.9em;
+  margin-right: 10px;
+  width: 60px;
+  /* Adjust width */
+  height: 30px;
+  /* Adjust height */
+}
+
+.header-container button img {
+  width: 16px;
+  height: 16px;
+}
+
+.header-container .toggle-mode-btn,
+.header-container .toggle-sound-btn {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 5px 8px;
+  transition: background-color 0.3s ease;
+  font-size: 0.9em;
+  margin-right: 10px;
+  width: 60px;
+  /* Adjust width */
+  height: 30px;
+  /* Adjust height */
+}
+
+.header-container .toggle-mode-btn img,
+.header-container .toggle-sound-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+.header-container .toggle-mode-btn:hover,
+.header-container .toggle-sound-btn:hover {
+  background-color: #218838;
 }
 
 /* Title Styling */
@@ -48,6 +97,19 @@ body {
   color: white;
   user-select: none;
   margin-right: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.title .main-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.title .sub-title {
+  font-size: large;
 }
 
 .ar-btn {
@@ -56,36 +118,34 @@ body {
   height: fit-content;
 }
 
-/* Mode toggle button */
-.toggle-mode-btn {
-  background-color: #28a745;
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  padding: 8px 12px;
-  transition: background-color 0.3s ease;
-  font-size: 1em;
-  user-select: none;
-}
-
+.toggle-mode-btn,
 .toggle-sound-btn {
   background-color: #28a745;
   color: #fff;
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  padding: 8px 12px;
+  padding: 5px 8px;
   transition: background-color 0.3s ease;
-  font-size: 1em;
-  user-select: none;
+  font-size: 0.9em;
+  margin-right: 10px;
+  width: 60px;
+  /* Adjust width */
+  height: 30px;
+  /* Adjust height */
 }
 
-.toggle-mode-btn:hover {
+.toggle-mode-btn img,
+.toggle-sound-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+.toggle-mode-btn:hover,
+.toggle-sound-btn:hover {
   background-color: #218838;
 }
 
-/* Toggle Sidebar Button */
 .toggle-sidebar-btn {
   position: inherit;
   right: 10px;
@@ -95,16 +155,21 @@ body {
   border-radius: 20px;
   cursor: pointer;
   margin-bottom: 20px;
-  transition: background-color 0.3s ease;
-  transition: top 0.3s ease;
+  transition: background-color 0.3s ease, top 0.3s ease;
   font-size: 1em;
   user-select: none;
+  width: auto;
+  /* Revert to auto width */
+  height: auto;
+  /* Revert to auto height */
+  padding: 8px 12px;
+  /* Revert padding */
 }
 
 .toggle-sidebar-btn-open {
   position: fixed;
   background-color: lightcoral;
-  top: 1%;
+  top: 15px;
 }
 
 .toggle-sidebar-btn-closed {
@@ -179,6 +244,7 @@ body {
   padding: 8px;
   cursor: pointer;
   text-align: center;
+  vertical-align: middle;
   border-radius: 5px;
   user-select: none;
   transition: background-color 0.2s ease;
@@ -243,6 +309,11 @@ body {
   font-size: 46px;
   color: #ffffff;
   text-align: center;
+  opacity: 0.8;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  pointer-events: none;
 }
 
 .organ-description {
@@ -303,6 +374,34 @@ body {
     box-sizing: border-box;
   }
 
+
+  .header-container button img {
+    width: 20px;
+    /* Adjust icon size */
+    height: 20px;
+    /* Adjust icon size */
+  }
+
+  .header-container .toggle-mode-btn,
+  .header-container .toggle-sound-btn {
+    width: 40px;
+    /* Adjust width for round button */
+    height: 40px;
+    /* Adjust height for round button */
+    border-radius: 50%;
+    /* Make the button round */
+    padding: 0;
+    /* Remove padding */
+  }
+
+  .header-container .toggle-mode-btn img,
+  .header-container .toggle-sound-btn img {
+    width: 20px;
+    /* Adjust icon size */
+    height: 20px;
+    /* Adjust icon size */
+  }
+
   .title {
     font-family: Arial;
     font-size: small;
@@ -324,25 +423,30 @@ body {
     height: fit-content;
   }
 
-  /* Mode toggle button */
-  .toggle-mode-btn {
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    padding: 8px 12px;
-    transition: background-color 0.3s ease;
-    font-size: 1em;
-    user-select: none;
-    padding: 5px 10px;
+  .toggle-mode-btn,
+  .toggle-sound-btn {
+    width: 40px;
+    /* Adjust width for round button */
+    height: 40px;
+    /* Adjust height for round button */
+    border-radius: 50%;
+    /* Make the button round */
+    padding: 0;
+    /* Remove padding */
+  }
+
+  .toggle-mode-btn img,
+  .toggle-sound-btn img {
+    width: 20px;
+    /* Adjust icon size */
+    height: 20px;
+    /* Adjust icon size */
   }
 
   .toggle-mode-btn:hover {
     background-color: #218838;
   }
 
-  /* Toggle Sidebar Button */
   .toggle-sidebar-btn {
     position: inherit;
     right: 10px;
@@ -352,10 +456,15 @@ body {
     border-radius: 20px;
     cursor: pointer;
     margin-bottom: 20px;
-    transition: background-color 0.3s ease;
-    transition: top 0.3s ease;
+    transition: background-color 0.3s ease, top 0.3s ease;
     font-size: 1em;
     user-select: none;
+    width: auto;
+    /* Revert to auto width */
+    height: auto;
+    /* Revert to auto height */
+    padding: 8px 12px;
+    /* Revert padding */
   }
 
   .toggle-sidebar-btn-open {
@@ -396,21 +505,15 @@ body {
   .subcategory-title,
   .part-button {
     font-size: 12px;
+    vertical-align: middle;
   }
 
   .overlay {
     position: fixed;
-    /* Ensure it stays in one place, relative to the viewport */
     top: 50%;
-    /* Center vertically */
     left: 50%;
-    /* Center horizontally */
     transform: translate(-50%, -50%);
-    /* Perfect centering */
     z-index: 1000;
-    /* Place it above other elements */
     pointer-events: none;
-    /* Ensure it doesn't block interactions */
   }
-
 }

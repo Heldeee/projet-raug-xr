@@ -152,12 +152,23 @@ const Index = () => {
   return (
     <div className="container">
       <div className="header-container">
-        <h1 className="title">Human Body Explorer</h1>
-        <button onClick={toggleMode} className="toggle-mode-btn">
+        <div className="title">
+          <div className="main-title">
+            <span>Human</span>
+            <span>Body</span>
+          </div>
+          <span className="sub-title">Explorer</span>
+        </div>
+        <button onClick={toggleMode}>
           {mode === "free" ? "All" : "Single"}
         </button>
-        <button onClick={toggleSound} className="toggle-sound-btn">
-          {isSoundActive ? "Sound Off" : "Sound On"}
+        <div style={{ width: '10px' }}></div>
+        <button onClick={toggleSound}>
+          {isSoundActive ? (
+            <img src="audio.svg" alt="Sound On" />
+          ) : (
+            <img src="no-sound.svg" alt="Sound Off" />
+          )}
         </button>
         <button
           onClick={toggleSidebar}
